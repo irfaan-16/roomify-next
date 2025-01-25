@@ -1,7 +1,13 @@
-import FetchDataSteps from "@/components/tutorial/fetch-data-steps";
+import CallControls from "@/components/CallControls";
+import ConnectedUsersList from "@/components/ConnectedUsersList";
+import Inbox from "@/components/Inbox";
+import TasksList from "@/components/TasksList";
 import { createClient } from "@/utils/supabase/server";
-import { InfoIcon } from "lucide-react";
+import Gradient from "/images/gradient.webp";
 import { redirect } from "next/navigation";
+import Image from "next/image";
+import { Editor } from "@/components/DynamicEditor";
+import Navbar from "@/components/Navbar";
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
@@ -15,24 +21,29 @@ export default async function ProtectedPage() {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
-      <div className="w-full">
-        <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-          <InfoIcon size="16" strokeWidth={2} />
-          This is a protected page that you can only see as an authenticated
-          user
+    <section className="py-4 relative px-4">
+      <div className="flex justify-between gap-6 mt-6">
+        <div className="w-full">
+          <div className="bg-white/4  p-2 text-white font-bold flex justify-center gap-3">
+            <button className="py-2 px-4 rounded-md cursor-pointer min-w-36">
+              whiteboard
+            </button>
+            <div className="w-0.5 h-10 bg-white/10"></div>
+            <button className="py-2 px-4 bg-black/60 rounded-md cursor-pointer">
+              text editor
+            </button>
+          </div>
+          <Editor />
         </div>
+        <Inbox />
       </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(user, null, 2)}
-        </pre>
+      <div className="flex justify-between mt-10">
+        <div className="w-full">
+          <CallControls />
+          <ConnectedUsersList />
+        </div>
+        <TasksList />
       </div>
-      <div>
-        <h2 className="font-bold text-2xl mb-4">Next steps</h2>
-        <FetchDataSteps />
-      </div>
-    </div>
+    </section>
   );
 }
